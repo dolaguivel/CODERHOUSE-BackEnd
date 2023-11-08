@@ -1,0 +1,90 @@
+<div>
+    <form id="myForm">
+        <h1>Creador de producto</h1>
+
+        <label for="Titulo">Titulo</label>
+        <input type="text" id="title" name="titulo" />
+
+        <label for="Descripcion">Descripcion</label>
+        <input type="text" id="description" name="texto" />
+
+        <label for="Codigo">Codigo</label>
+        <input type="text" id="code" name="texto" />
+
+        <label for="Precio">Precio</label>
+        <input type="text" id="price" name="texto" />
+
+        <label for="Status">Status</label>
+        <input type="text" id="status" name="texto" />
+
+        <label for="Stock">Stock</label>
+        <input type="text" id="stock" name="texto" />
+
+        <label for="Categoria">Categoria</label>
+        <input type="text" id="category" name="texto" />
+
+        <label for="Imagen">Imagen</label>
+        <input type="text" id="thumbnail" name="texto" />
+
+        <button type="submit">Enviar</button>
+    </form>
+
+    <form id="deleteProducts">
+        <label for="id">Id del producto que desea eliminar</label>
+        <input type="text" id="idProduct" name="texto" />
+        <button type="submit">Enviar</button>
+    </form>
+
+    <div id="listOfProduct"></div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
+<script>
+    const socket = io();
+
+
+    const addProduct = document.getElementById('myForm');
+
+    addProduct.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const title = document.getElementById("title").value
+        const description = document.getElementById("description").value
+        const code = document.getElementById("code").value
+        const price = document.getElementById("price").value
+        const status = document.getElementById("status").value
+        const stock = document.getElementById("stock").value
+        const category = document.getElementById("category").value
+        const thumbnail = document.getElementById("thumbnail").value
+
+        socket.emit('addProduct', { title, description, code, price, status, stock, category, thumbnail });
+    });
+
+
+    const deleteProducts = document.getElementById('deleteProducts')
+
+    deleteProducts.addEventListener('submit', function (event) {
+        event.preventDefault()
+        const id = document.getElementById('idProduct').value
+        socket.emit('deleteProduct', id)
+    })
+
+    socket.on('listProduct', (data) => {    
+        let html = data.map((product) => (
+            `<ul>
+                <h1>Titulo: ${product.title}</h1>
+                <li>Descripcion: ${product.description}</li>
+                <li>Codigo: ${product.code}</li>
+                <li>Precio: ${product.price}</li>
+                <li>Status: ${product.status}</li>
+                <li>Stock: ${product.stock}</li>
+                <li>Category: ${product.category}</li>
+                <li>Imagen: ${product.thumbnail}</li>
+                <li>Id: ${product.id}</li>
+            </ul>`
+        ))
+        const product = document.getElementById('listOfProduct')
+        product.innerHTML = html
+    })
+
+
+</script>

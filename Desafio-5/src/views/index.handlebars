@@ -1,0 +1,21 @@
+<div>
+    <h1>Lista de productos!</h1>
+    {{#if isAdmin}}
+    {{#each product}}
+    <ul>
+        <h1 style="color: blue">Titulo: {{this.title}}</h1>
+        <li>Descripcion: {{this.description}}</li>
+        <li>Codigo: {{this.code}}</li>
+        <li>Precio: {{this.price}}</li>
+        <li>Status: {{this.status}}</li>
+        <li>Stock: {{this.stock}}</li>
+        <li>Precio: {{this.price}}</li>
+        <li>Categoria: {{this.category}}</li>
+        <li>Imagen: {{this.thumbnail}}</li>
+        <li>Id: {{this.id}}</li>
+    </ul>
+    {{/each}}
+    {{else}}
+    <p>No tienes permisos.</p>
+    {{/if}}
+</div>
